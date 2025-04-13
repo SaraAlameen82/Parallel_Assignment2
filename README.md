@@ -1,244 +1,47 @@
 # Maze Explorer Game
 
-A simple maze exploration game built with Pygame where you can either manually navigate through a maze or watch an automated solver find its way to the exit.
-
-## Getting Started
-
-### 1. Connect to Your VM
-
-1. Open **<span style="color:red">Visual Studio Code</span>**
-2. Install the "Remote - SSH" extension if you haven't already
-3. Connect to your VM using SSH:
-   - Press `Ctrl+Shift+P` to open the command palette
-   - Type "Remote-SSH: Connect to Host..."
-   - Enter your VM's SSH connection details
-   - Enter your credentials when prompted
-
-4. Install required VS Code extensions:
-   - Press `Ctrl+Shift+X` to open the Extensions view
-   - Search for and install "Python Extension Pack"
-   - Search for and install "Jupyter"
-   - These extensions will provide Python language support, debugging, and Jupyter notebook functionality
-
-### 2. Project Setup
-
-1. Create and activate a Conda environment:
-```bash
-# Create a new conda environment with Python 3.12
-conda create -n maze-runner python=3.12
-
-# Activate the conda environment
-conda activate maze-runner
-```
-
-2. Install Jupyter and the required dependencies:
-```bash
-# Install Jupyter
-pip install jupyter
-
-# Install project dependencies
-pip install -r requirements.txt
-```
-
-3. Open the project in Visual Studio Code and select the interpreter:
-   - Press `Ctrl+Shift+P` to open the command palette
-   - Type "Python: Select Interpreter"
-   - Choose the interpreter from the `maze-runner` environment
-
-## Running the Game
-
-### Basic Usage
-Run the game with default settings (30x30 random maze):
-```bash
-python main.py
-```
-
-### Manual Mode (Interactive)
-Use arrow keys to navigate through the maze:
-```bash
-# Run with default random maze
-python main.py
-
-# Run with static maze
-python main.py --type static
-
-# Run with custom maze dimensions
-python main.py --width 40 --height 40
-```
-
-### Automated Mode (Explorer)
-The explorer will automatically solve the maze and show statistics:
-
-#### Without Visualization (Text-only)
-```bash
-# Run with default random maze
-python main.py --auto
-
-# Run with static maze
-python main.py --type static --auto
-
-# Run with custom maze dimensions
-python main.py --width 40 --height 40 --auto
-```
-
-#### With Visualization (Watch the Explorer in Action)
-```bash
-# Run with default random maze
-python main.py --auto --visualize
-
-# Run with static maze
-python main.py --type static --auto --visualize
-
-# Run with custom maze dimensions
-python main.py --width 40 --height 40 --auto --visualize
-```
-
-### Jupyter Notebook Visualization
-To run the maze visualization in Jupyter Notebook:
-
-1. Make sure you have activated your virtual environment and installed all dependencies
-2. Open the project in Visual Studio Code
-3. Select the correct Python interpreter:
-   - Press `Ctrl+Shift+P` to open the command palette
-   - Type "Python: Select Interpreter"
-   - Choose the interpreter from your created environment:
-     - If using venv: Select the interpreter from `venv/bin/python` (Linux/Mac) or `venv\Scripts\python.exe` (Windows)
-     - If using Conda: Select the interpreter from the `maze-runner` environment
-4. Open the `maze_visualization.ipynb` notebook in VS Code
-5. VS Code will automatically start a Jupyter server
-6. Run all cells to see the maze visualization in action
-
-Available arguments:
-- `--type`: Choose between "random" (default) or "static" maze generation
-- `--width`: Set maze width (default: 30, ignored for static mazes)
-- `--height`: Set maze height (default: 30, ignored for static mazes)
-- `--auto`: Enable automated maze exploration
-- `--visualize`: Show real-time visualization of the automated exploration
-
-## Maze Types
-
-### Random Maze (Default)
-- Generated using depth-first search algorithm
-- Different layout each time you run the program
-- Customizable dimensions
-- Default type if no type is specified
-
-### Static Maze
-- Predefined maze pattern
-- Fixed dimensions (50x50)
-- Same layout every time
-- Width and height arguments are ignored
-
-## How to Play
-
-### Manual Mode
-1. Controls:
-- Use the arrow keys to move the player (<span style="color:blue">blue circle</span>)
-- Start at the <span style="color:green">green square</span>
-- Reach the <span style="color:red">red square</span> to win
-- Avoid the <span style="color:black">black walls</span>
-
-### Automated Mode
-- The explorer uses the right-hand rule algorithm to solve the maze
-- Automatically finds the path from start to finish
-- Displays detailed statistics at the end:
-  - Total time taken
-  - Total moves made
-  - Number of backtrack operations
-  - Average moves per second
-- Works with both random and static mazes
-- Optional real-time visualization:
-  - Shows the explorer's position in <span style="color:blue">blue</span>
-  - Updates at 30 frames per second
-  - Pauses for 2 seconds at the end to show the final state
-
-## Project Structure
-
-```
-maze-runner/
-├── src/
-│   ├── __init__.py
-│   ├── constants.py
-│   ├── maze.py
-│   ├── player.py
-│   ├── game.py
-│   ├── explorer.py
-│   └── visualization.py
-├── main.py
-├── maze_visualization.ipynb
-├── requirements.txt
-└── README.md
-```
-
-## Code Overview
-
-### Main Files
-- `main.py`: Entry point of the game. Handles command-line arguments and initializes the game with specified parameters.
-- `requirements.txt`: Lists all Python package dependencies required to run the game.
-
-### Source Files (`src/` directory)
-- `__init__.py`: Makes the src directory a Python package.
-- `constants.py`: Contains all game constants like colors, screen dimensions, cell sizes, and game settings.
-- `maze.py`: Implements maze generation using depth-first search algorithm and handles maze-related operations.
-- `player.py`: Manages player movement, collision detection, and rendering of the player character.
-- `game.py`: Core game implementation including the main game loop, event handling, and game state management.
-- `explorer.py`: Implements automated maze solving using the right-hand rule algorithm and visualization.
-- `visualization.py`: Contains functions for maze visualization.
-
-## Game Features
-
-- Randomly generated maze using depth-first search algorithm
-- Predefined static maze option
-- Manual and automated exploration modes
-- Real-time visualization of automated exploration
-- Smooth player movement
-- Collision detection with walls
-- Win condition when reaching the exit
-- Performance metrics (time and moves) for automated solving
-
-## Development
-
-The project is organized into several modules:
-- `constants.py`: Game constants and settings
-- `maze.py`: Maze generation and management
-- `player.py`: Player movement and rendering
-- `game.py`: Game implementation and main loop
-- `explorer.py`: Automated maze solving implementation and visualization
-- `visualization.py`: Functions for maze visualization
-
-## Getting Started with the Assignment
-
-Before attempting the questions below, please follow these steps:
-
-1. Open the `maze_visualization.ipynb` notebook in VS Code
-2. Run all cells in the notebook to:
-   - Understand how the maze is generated
-   - See how the explorer works
-   - Observe the visualization of the maze solving process
-   - Get familiar with the statistics and metrics
-
-This will help you better understand the system before attempting the questions.
 
 ## Student Questions
 
 ### Question 1 (10 points)
-Explain how the automated maze explorer works. Your answer should include:
-1. The algorithm used by the explorer
-2. How it handles getting stuck in loops
-3. The backtracking strategy it employs
-4. The statistics it provides at the end of exploration
+Explain how the automated maze explorer works.
 
-To answer this question:
-1. Run the explorer both with and without visualization
-2. Observe its behavior in different maze types
-3. Analyze the statistics it provides
-4. Read the source code in `explorer.py` to understand the implementation details
+**1.1. The algorithm used by the explorer** 
 
-Your answer should demonstrate a clear understanding of:
-- The right-hand rule algorithm
-- The loop detection mechanism
-- The backtracking strategy
-- The performance metrics collected
+The explorer solves the maze using the Right-Hand Rule algorithm, which will prioritize turning right at first, then forward, and then left. The algorithm operates in the following order: 
+- The explorer turns to the right using the "turn_right()" method and then tries to move forward.
+- It then calls the "can_move_forward()" method to check whether it can move forward in this direction. 
+- If it returns true, then it will move forward and add the current position (x and y coordinates) to the visited positions set. 
+- If the "can_move_forward()" method returns false, that means it is a blocked way (is facing a wall), therefore, it will face forward again (technically left) and tries again. 
+- If the forward side is blocked as well, it will turn to the left and again try moving forward. 
+- If it is blocked as well, the explorer will turn to the left this time facing backward from the perspective of the first direction, and moves in that direction.
+
+**1.2. How it handles getting stuck in loops** 
+
+To prevent getting stuck in loops, the explorer uses a deque "move_history" containing the last 3 positions visited and the "is_stuck()" method. 
+- The method will check if the "moves_history" deque contains less that three values.
+- If yes the function will return "False" indicating the explorer is not stuck in a loop.
+- Otherwise, it will return "True" if all three values (moves) are the same, and "False" if they are not.
+
+**1.3. The backtracking strategy it employs**
+
+If the explorer finds itself stuck it will try backtracking using "self.backtrack()", which will take the following steps: 
+- Check if there is a backtrack path using the "backtrack_path" attribute. If the "backtrack_path" list is empty, it will call the "find_backtrack_path()" method, which will:
+   - First add the current position to the "visited" set.
+   - Then it will iterate over the positions in the "self.moves" list, and add the visited node to the "path" list.
+   - It will then return the list of reversed path to the "backtrack()" method as a backtrack_path. 
+- The "backtrack()" method will recieve the list and for each position, it will count the number of cells adjacent to it that are not walls, and thats by checking the "self.count_available_choices()" for the current position.
+- for each iteration the function will increment the "self.backtrack_count" and visualize the taken step.
+- When the explorer finds a cell connected to a path that has not yet been explored, it will then stop backtracking and start exploring this path. 
+
+**1.4. The statistics it provides at the end of exploration**
+
+When the explorer reaches the end point, the "print_statistics()" method is called to display detailed performance statistics inclusing: 
+- The time it took the explorer to solve the maze (by subtracting the start_time from the end_time).
+- The total number of moves (using "len(self.moves)").
+- The amount of times the explorer backtracked (from the "self.backtrack_count" variable).
+- The average number of moves per second (by dividing the number of moves by the time it took to find the goal).
+
 
 ### Question 2 (30 points)
 Modify the main program to run multiple maze explorers simultaneously. This is because we want to find the best route out of the maze. Your solution should:
