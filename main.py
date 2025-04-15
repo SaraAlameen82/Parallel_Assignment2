@@ -4,7 +4,7 @@ Main entry point for the maze runner game.
 
 import argparse
 from src.game import run_game
-from tasks import run_explorer_task, a_star_explorer, bfs_explorer
+from tasks import run_explorer_task, a_star_task, bfs_task
 
 
 def main():
@@ -36,12 +36,12 @@ def main():
         print(f"Sending one task of each explorer Celery workers...")
         
         # Send A* explorer task to a Celery worker
-        a_star_result = a_star_explorer.delay(args.width, args.height, args.type, args.visualize)
+        a_star_result = a_star_task.delay(args.width, args.height, args.type, args.visualize)
         results.append(("A*_Explorer", a_star_result))
 
         # Send BFS explorer task to a Celery worker
-        bfs_result = bfs_explorer.delay(args.width, args.height, args.type, args.visualize)
-        results.append(("BFS_Explorer", bfs_result))
+        bfs_result = bfs_task.delay(args.width, args.height, args.type, args.visualize)
+        results.append(("bfs_task", bfs_result))
         
         # Loop to create and send tasks to Celery workers
         """
