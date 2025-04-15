@@ -2,7 +2,7 @@ from celery import Celery, group
 from src.maze import create_maze
 from src.explorer import Explorer
 from src.a_star_explorer import a_star_explorer 
-from src.bfs_explorer import bfs_explore 
+from src.bfs_explorer import bfs_explorer 
 import copy
 
 
