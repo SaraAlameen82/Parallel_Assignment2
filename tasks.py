@@ -3,7 +3,9 @@ from src.maze import create_maze
 from src.explorer import Explorer
 
 
-app = Celery('maze_tasks', broker='redis://localhost:6379/0')
+app = Celery('maze_tasks', 
+             broker='redis://localhost:6379/0',
+             backend='redis://localhost:6379/0')
 
 @app.task
 def run_explorer_task(width, height, maze_type, visualize=False):
