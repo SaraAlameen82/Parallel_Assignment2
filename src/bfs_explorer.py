@@ -1,77 +1,100 @@
 import time
 from collections import deque
 
-def get_neighbors(pos, maze):
+
+class BFSExplorer:
     """
-        Finds the neighboring positions that are not walls.
+    BFS Explorer for solving mazes using the Breadth-First Search algorithm.
+    """
+
+    def __init__(self, maze, start, end, visualize=False):
+        """
+        Initialize the BFS explorer.
+
         Args:
-            pos: Current position (x, y).
-            maze: 2D list representing the maze.
-        Returns:
-            A list of neighboring (x, y) positions that are not walls.
-    """
-    rows, cols = len(maze), len(maze[0])
-    r, c = pos
-    directions = [(0,1), (1,0), (0,-1), (-1,0)]
-    neighbors = []
-    for dr, dc in directions:
-        # Check all neighbors for walls
-        nr, nc = r + dr, c + dc
-        # Check if the neighbor is within bounds and not a wall
-        if 0 <= nr < rows and 0 <= nc < cols and maze[nr][nc] != 1:
-            # 
-            neighbors.append((nr, nc))
-    return neighbors
+            maze (Maze): The maze instance to explore.
+            start (tuple): Starting coordinate (row, col).
+            end (tuple): Goal coordinate (row, col).
+            visualize (bool): Whether to visualize the exploration step-by-step.
+        """
+        self.maze = maze
+        self.start = start
+        self.end = end
+        self.visualize = visualize
+        self.visited = set()
+        self.came_from = {}
+        self.path = []
 
-def bfs_explorer(maze, visualize=False):
-    """
-        Implementing BFS to explore the maze.
+    def get_neighbors(self, pos):
+        """
+        Get valid neighboring cells of the current position.
+
         Args:
-            maze: 2D list representing the maze.
-            visualize: Boolean to visualize the maze exploration. Defaults to False.
+            pos (tuple): The current position (row, col).
+
         Returns:
-            time_taken: Time taken to explore the maze.
-            moves: Number of moves taken to explore the maze.
-    """
-    start_time = time.time()
+            list: List of valid neighboring positions.
+        """
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        neighbors = []
+        for dr, dc in directions:
+            nr, nc = pos[0] + dr, pos[1] + dc
+            if self.maze.in_bounds((nr, nc)) and self.maze.is_open((nr, nc)):
+                neighbors.append((nr, nc))
+        return neighbors
 
-    # Defining start and end (gaol) positions
-    start = (0, 0)
-    end = (len(maze) - 1, len(maze[0]) - 1)
+    def reconstruct_path(self, current):
+        """
+        Reconstruct the path from start to end.
 
-    # Initiating the queue for BFS
-    queue = deque([start])
-    visited = set([start])
-    # Dictionary to keep track of previous nodes to reconstruct the final path
-    previous_nodes = {}
+        Args:
+            current (tuple): The goal position.
 
-    while queue:
-        # Dequeue the current position from the front of the queue.
-        current = queue.popleft()
+        Returns:
+            list: The reconstructed path from start to current.
+        """
+        path = []
+        while current != self.start:
+            path.append(current)
+            current = self.came_from[current]
+        path.append(self.start)
+        path.reverse()
+        return path
 
-        # stop exploring if the goal is reached.
-        if current == end:
-            break
+    def run(self):
+        """
+        Run the BFS algorithm to explore the maze.
 
-        # Check if each neighbor is valid and not visited.
-        for neighbor in get_neighbors(current, maze):
-            if neighbor not in visited:
-                # Mark the neighbor as visited and enqueue it.
-                visited.add(neighbor)
-                queue.append(neighbor)
-                # Add the current node to the previous nodes dictionary.
-                previous_nodes[neighbor] = current
+        Returns:
+            dict: A dictionary with the time taken and number of moves.
+        """
+        start_time = time.time()
+        queue = deque()
+        queue.append(self.start)
+        self.visited.add(self.start)
 
+        while queue:
+            current = queue.popleft()
 
-    # Reconstruct path
-    moves = 0
-    current = end
-    
-    # Finding the final shortest path by backtracking from the end node.
-    # And then reversing the list to get the correct order.
-    while current in previous_nodes:
-        current = previous_nodes[current]
-        moves += 1
+            if current == self.end:
+                self.path = self.reconstruct_path(current)
+                break
 
-    time_taken = time.time() - start_time
-    return time_taken, moves
+            for neighbor in self.get_neighbors(current):
+                if neighbor not in self.visited:
+                    self.visited.add(neighbor)
+                    self.came_from[neighbor] = current
+                    queue.append(neighbor)
+
+            if self.visualize:
+                self.maze.update_visual(current)
+
+        end_time = time.time()
+        time_taken = end_time - start_time
+        num_moves = len(self.path)
+
+        return {
+            "time_taken": time_taken,
+            "moves": num_moves,
+            "path": self.path,
+        }
