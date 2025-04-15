@@ -49,19 +49,13 @@ Modify the main program to run multiple maze explorers simultaneously. This is b
 2. Collect and compare statistics from all explorers
 3. Display a summary of results showing which explorer performed best
 
-*Hints*:
-- To get 20 points, use use multiprocessing.
-- To get 30 points, use MPI4Py on multiple machines.
-- Use Celery and RabbitMQ to distribute the exploration tasks. You will get full marks plus a bonus.
-- Implement a task queue system
-- Do not visualize the exploration, just run it in parallel
-- Store results for comparison
+I used Celery with Redis as a broker and backend to run tasks in parallel. Each explorer ran separately and returned its results to the main function where it will be analyzed and displayed. Using Celery will allow us to offload heavy computation like maze solving to background workers, which can run on multiple machines or processes.
 
-**To answer this question:** 
-1. Study the current explorer implementation
-2. Design a parallel execution system
-3. Implement task distribution
-4. Create a results comparison system
+Parallel Exploration Steps: 
+- First, I created a Celery worker in the tasks.py file. This worker will recieve a maze-solving tasks and returns results.
+- The main function will send 4 tasks to the Celery worker ("result = run_explorer_task.delay(strategy, type)"
+- Tasks get executed concurrently on available worker processes.
+
 
 ### Question 3 (10 points)
 Analyze and compare the performance of different maze explorers on the static maze. Your analysis should:
@@ -85,9 +79,22 @@ Based on your analysis from Question 3, propose and implement enhancements to th
 3. Implement at least two of the proposed improvements:
 
 Your answer should include:
-1. A detailed explanation of the identified limitations
-2. Documentation of your proposed improvements
-3. The modified code with clear comments explaining the changes
+4.1. A detailed explanation of the identified limitations
+The current explorer uses the Right-Hand Rule strategy to explore and solve the maze, which might not be the best approach to solving a maze, and its limitations include: 
+- Inefficient moves: The Right-Hand Rule does not consider the position of the goal or which path is the shortest, leading to unnecessary moves that will only increase the amount of time taken by the explorer and the number of moves.
+- The Right-Hand Rule's strategy to avoid getting stuck in loops is simple and would not prevent getting stuck in circular paths. 
+- Its approach does not consider any heuristics to prioritize one path over the other based on how likely it is to lead to the goal, and it spends time exploring irrelevent paths.
+- The current explorer is not advanced enough to handle more complex maps and would require an excessive amount of time to explore a maze with a large number of possible paths.
+
+4.2. Documentation of your proposed improvements
+Some enhancements that could improve the explorer's performance are: 
+- Using a search algorithm would enhance the performance alot since search algorithms are built to lead and improve search processes. A* for instance uses heuristic values to prioritize one path over the other, reducing the search space and time in larger or more complex mazes.
+- Marking dead ends could help avoid or reduce unnecessary exploration and imrove the explorer's efficiency.
+- Implementing a more advanced startegy to prevent getting stuck in loops. An example of this would be the BFS strategy approach of using a visited set to record all visited nodes which is much better in comparison to the Right-Hand Rule.
+
+
+4.3. The modified code with clear comments explaining the changes
+I added the BFSExplorer class in a new file "bfs_explorer.py" and integrated it in the main.py and tasks.py files. This approach will make the explorer find the shortest path and not only a random path.
 
 ### Question 5 (20 points)
 
