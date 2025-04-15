@@ -66,8 +66,13 @@ Analyze and compare the performance of different maze explorers on the static ma
    - Number of moves made
    - *Optional*:
      - Number of backtrack operations
-
 3. What do you notice regarding the performance of the explorers? Explain the results and the observations you made.
+
+After running 4 explorers simultaneously in the static mode,I found that:
+- All explorers had the same moves count, which was 1279. 
+- The time metric also had the same value for each explorer, likely due to fast execution and rounding. 
+This indicates that the maze is static and deterministic, with the same solving strategy, number of explored nodes, etc. 
+
 
 ### Question 4 (20 points)
 Based on your analysis from Question 3, propose and implement enhancements to the maze explorer to overcome its limitations. Your solution should:
@@ -106,6 +111,8 @@ Compare the performance of your enhanced explorer with the original:
 Your answer should include:
 1. Performance comparison results and analysis
 2. Discussion of any trade-offs or new limitations introduced
+
+The BFS explorer was much better than the Right-Hand Rule explorer and have improved the model performance immediatly even before applying any more enhancements.
 
 ### Final points 6 (10 points)
 1. Solve the static maze in 150 moves or less to get 10 points.
