@@ -36,8 +36,8 @@ def main():
         print(f"Sending one task of each explorer Celery workers...")
         
         # Send A* explorer task to a Celery worker
-        a_star_result = a_star_task.delay(args.width, args.height, args.type, args.visualize)
-        results.append(("A*_Explorer", a_star_result))
+        # a_star_result = a_star_task.delay(args.width, args.height, args.type, args.visualize)
+        # results.append(("A*_Explorer", a_star_result))
 
         # Send BFS explorer task to a Celery worker
         bfs_result = bfs_task.delay(args.width, args.height, args.type, args.visualize)
