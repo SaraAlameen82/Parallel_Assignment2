@@ -4,7 +4,8 @@ Main entry point for the maze runner game.
 
 import argparse
 from src.game import run_game
-from tasks import run_explorer_task, a_star_task, bfs_task
+from tasks import bfs_task
+# from tasks import run_explorer_task, a_star_task
 
 
 def main():
