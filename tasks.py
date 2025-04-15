@@ -1,26 +1,43 @@
-"""
-Celery task definitions for maze explorers.
-"""
-
 from celery import Celery
-from src.bfs_explorer import BFSExplorer 
-import time
+from src.maze import create_maze
+from src.explorer import Explorer  
+from src.bfs_explorer import BFSExplorer  
 
-# Defining a Celery app instance
-app = Celery("maze_tasks", broker="redis://localhost:6379/0", backend="redis://localhost:6379/0")
+# Creating a Celery app instance with Redis as broker and backend
+app = Celery('maze_tasks', 
+             broker='redis://localhost:6379/0',
+             backend='redis://localhost:6379/0')
+
 
 @app.task
-def bfs_task(width, height, maze_type, visualize):
+def run_explorer_task(width, height, maze_type, visualize=False, strategy="default"):
     """
-    Celery task to run the BFS Explorer.
+    This function runs a maze exploration task in a distributed way using Celery.
+    It supports two strategies: default (stack-based, DFS-style) and bfs (queue-based BFS).
+
+    Args:
+        width (int): Maze width.
+        height (int): Maze height.
+        maze_type (str): Type of maze to generate ('random' or 'static').
+        visualize (bool): If True, visualize the maze solving (optional).
+        strategy (str): Strategy to use: 'default' or 'bfs'.
+
+    Returns:
+        dict: Dictionary containing time taken, number of moves, maze type, and strategy used.
     """
-    explorer = BFSExplorer(width=width, height=height, maze_type=maze_type, visualize=visualize)
-    
-    start_time = time.time()
-    moves = explorer.solve()
-    end_time = time.time()
-    
+    maze = create_maze(width, height, maze_type)
+
+    # Choose solver based on strategy
+    if strategy == "bfs":
+        explorer = BFSExplorer(maze, visualize=False)
+    else:
+        explorer = Explorer(maze, visualize=False)
+
+    time_taken, moves = explorer.solve()
+
     return {
-        "moves": moves,
-        "time_taken": end_time - start_time
+        'time_taken': time_taken,
+        'moves': len(moves),
+        'type': maze_type,
+        'strategy': strategy
     }
