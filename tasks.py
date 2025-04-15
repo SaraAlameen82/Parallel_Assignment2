@@ -3,7 +3,7 @@ from src.maze import create_maze
 from src.explorer import Explorer  
 from src.bfs_explorer import BFSExplorer  
 
-# Creating a Celery app instance with Redis as broker and backend
+# Create a Celery app instance with Redis as broker and backend
 app = Celery('maze_tasks', 
              broker='redis://localhost:6379/0',
              backend='redis://localhost:6379/0')
