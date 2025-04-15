@@ -49,7 +49,7 @@ def main():
             
             # Determine best result by fewest moves
             best = min(all_results, key=lambda x: x['moves'])
-            print(f"\n🏆 Best Explorer used '{best['strategy']}' strategy:"
+            print(f"\nBest Explorer used '{best['strategy']}' strategy:"
                   f" {best['moves']} moves in {best['time_taken']:.2f}s")
         else:
             for i, result in async_results:
