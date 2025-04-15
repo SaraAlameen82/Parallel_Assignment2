@@ -3,10 +3,10 @@ Celery task definitions for maze explorers.
 """
 
 from celery import Celery
-from explorers.bfs_explorer import BFSExplorer  # assuming your class is here
+from src.bfs_explorer import BFSExplorer 
 import time
 
-# Define the Celery app instance
+# Defining a Celery app instance
 app = Celery("maze_tasks", broker="redis://localhost:6379/0", backend="redis://localhost:6379/0")
 
 @app.task
