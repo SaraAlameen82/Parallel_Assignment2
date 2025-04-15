@@ -10,17 +10,16 @@ def get_neighbors(pos, maze):
         Returns:
             A list of neighboring (x, y) positions that are not walls.
     """
-    # Maze dimensions
     rows, cols = len(maze), len(maze[0])
-    # Current position
     r, c = pos
     directions = [(0,1), (1,0), (0,-1), (-1,0)]
     neighbors = []
     for dr, dc in directions:
         # Check all neighbors for walls
         nr, nc = r + dr, c + dc
+        # Check if the neighbor is within bounds and not a wall
         if 0 <= nr < rows and 0 <= nc < cols and maze[nr][nc] != 1:
-          # Add valid neighbors to the neighbors list
+            # 
             neighbors.append((nr, nc))
     return neighbors
 
